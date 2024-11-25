@@ -50,11 +50,18 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const isPasswordValid = await user.comparePassword(password);
 
+    console.log(isPasswordValid);
+    
     if (!isPasswordValid) {
         throw new ApiError(401, "Invalid user credentials");
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
+    
+
+
+
 
     const loggedInUser = await User.findById(user._id).select("-password");
 

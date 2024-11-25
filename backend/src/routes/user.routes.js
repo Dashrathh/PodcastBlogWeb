@@ -1,19 +1,21 @@
-import express from "express"
-
-import { registerUser,
-    loginUser,
-    logoutUser
-
- } from "../controllers/user.controller.js";
-import { asyncHandler } from "../utils/asyncHandler.js"
-
+import express from "express";
+import { registerUser, loginUser, logoutUser } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/register",asyncHandler(registerUser))
+router.post("/register", registerUser);
 
-router.post("/login",asyncHandler(loginUser))
+router.post("/login", loginUser);
 
-router.post("/logout",asyncHandler(logoutUser))
+router.post("/logout", verifyJWT, logoutUser);
 
-export default router
+router.get("/profile", verifyJWT, (req, res) => {
+    res.status(200).json({
+        success: true,
+        data: req.user, 
+        message: "User profile fetched successfully",
+    });
+});
+
+export default router;
