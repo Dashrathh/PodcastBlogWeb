@@ -15,6 +15,7 @@ cloudinary.config({
  * @param {string | string[]} localFilePaths - Single file path or array of file paths.
  * @returns {Promise<string | string[]>} - Secure URL(s) of the uploaded file(s).
  */
+
 const uploadOnCloudinary = async (localFilePaths) => {
     if (!localFilePaths || localFilePaths.length === 0) return null;
 
@@ -24,7 +25,7 @@ const uploadOnCloudinary = async (localFilePaths) => {
     try {
         const uploadPromises = filePaths.map(async (filePath) => {
             // Normalize path to handle Windows-style backslashes
-            const normalizedPath = filePath.replace(/\\/g, "/");
+            const normalizedPath = filePath.path.replace(/\\/g, "/");            
 
             const response = await cloudinary.uploader.upload(normalizedPath, {
                 resource_type: "auto", // This will automatically detect image/video type

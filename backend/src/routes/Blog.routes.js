@@ -17,8 +17,9 @@ const router  = express.Router();
 router.post(
     "/",
     upload.fields([
-        {name:"image",
-        maxCount:5
+        {
+            name:  "images",
+             maxCount:5
         }
     ]),
     createBlog

@@ -14,15 +14,13 @@ const createBlog = asyncHandler(async (req, res) => {
     }
 
     const uploadedImages = Array.isArray(req.files?.images)
-    ? await uploadOnCloudinary(req.files.images)
-    : req.files?.images
-    ? [await uploadOnCloudinary([req.files.images])]
-    : [];
+        ? await uploadOnCloudinary(req.files.images)
+        : req.files?.images
+            ? [await uploadOnCloudinary([req.files.images])]
+            : [];
 
-console.log("Uploaded Images to Cloudinary: ", uploadedImages); // Debugging: Ensure Cloudinary uploads work
-console.log("Uploaded Files: ", req.files);
-
-
+    console.log("Uploaded Images to Cloudinary: ", uploadedImages); // Debugging: Ensure Cloudinary uploads work
+    // console.log("Uploaded Files: ", req.files);
 
     const newBlog = await Blog.create({
         title,
@@ -31,11 +29,8 @@ console.log("Uploaded Files: ", req.files);
         images: uploadedImages
     });
 
-    console.log(uploadedImages);
-    
     res.status(201).json(new ApiResponse(201, newBlog, "Blog created successfully"));
 });
-
 // Get All Blogs
 const getAllBlogs = asyncHandler(async (req, res) => {
     const blogs = await Blog.find();
