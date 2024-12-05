@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom"; // Import Link to navigate to signup
+import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {setUser} = useContext(UserContext); 
-  const navigate = useNavigate(); // For navigation
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,18 +20,23 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error("Login failed! Please check your credentials.");
-      }
-
       const data = await response.json();
-      localStorage.setItem("token", data.token); // Save token in localStorage
-      setUser(data.user); // Update user in context
-     
-      navigate("/dashboard"); // Redirect to dashboard
+    console.log("Login Response Data:", data);
+      if (data.success) {
+        // Storing user and accessToken
+        setUser(data.user);
+
+        // Make sure the accessToken is set correctly in localStorage
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Navigate to dashboard
+        navigate("/dashboard");
+      } else {
+        console.log("Login failed:", data.message);
+      }
     } catch (error) {
-      console.error("Login Error:", error.message);
-      alert(error.message);
+      console.error("Error during login:", error);
     }
   };
 

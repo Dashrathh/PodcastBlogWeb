@@ -1,7 +1,10 @@
 import React from "react";
-import { FaBlog, FaPodcast, FaPlus, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaBlog, FaPodcast, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -42,10 +45,16 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap justify-between mb-6">
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center space-x-2">
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center space-x-2"
+            onClick={() => navigate("/CreateBlog")}
+          >
             <FaPlus /> <span>Create New Blog</span>
           </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center space-x-2">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center space-x-2"
+            onClick={() => navigate("/CreatePodcast")}
+          >
             <FaPlus /> <span>Upload New Podcast</span>
           </button>
         </div>
