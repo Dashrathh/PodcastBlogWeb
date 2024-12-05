@@ -18,6 +18,8 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include", // Added to include cookies in the request
+
       });
 
       const data = await response.json();
@@ -26,11 +28,9 @@ const Login = () => {
         // Storing user and accessToken
         setUser(data.user);
 
-        // Make sure the accessToken is set correctly in localStorage
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        // Navigate to dashboard
         navigate("/dashboard");
       } else {
         console.log("Login failed:", data.message);
