@@ -88,9 +88,9 @@ dist
 
 # Gatsby files
 .cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
+# Comment in the public line if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#public-directory-support
-# public
+public/
 
 # vuepress build output
 .vuepress/dist
@@ -117,5 +117,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Node
+# macOS system file
 .DS_Store
