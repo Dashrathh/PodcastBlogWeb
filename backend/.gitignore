@@ -102,6 +102,7 @@ public/
 # FuseBox cache
 .fusebox/
 
+public/temp
 # DynamoDB Local files
 .dynamodb/
 

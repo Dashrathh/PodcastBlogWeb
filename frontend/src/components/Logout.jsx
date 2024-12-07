@@ -17,7 +17,7 @@ const Logout = () => {
                 // Log server response
                 console.log("Logout Response:", await response.json());
 
-                localStorage.removeItem("user");
+                localStorage.removeItem("accessToken");
                 setUser(null);
 
 
