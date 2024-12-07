@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { FaMicrophone } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-// import UserContext from '../../context/UserContext';
+import React, { useState, useEffect } from "react";
+import { FaMicrophone } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-// const {username} = UserContext()
 const Header = () => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
 
   // Fetch username from localStorage or API
   useEffect(() => {
-    // Example: Replace with your authentication logic
-    const storedUsername = localStorage.getItem('username') // Default for demo
-    setUsername(storedUsername);
+    // Fetch the username on component mount
+    const storeData = localStorage.getItem("user");
+    if (storeData) {
+      const parsedData = JSON.parse(storeData);
+      setUsername(parsedData.username || "vika");
+      console.log(parsedData.username);
+      
+    } else{
+   setUsername("")      
+    }
   }, []);
 
   return (
@@ -38,7 +43,7 @@ const Header = () => {
             About
           </Link>
 
-          {/* Check if user is logged in */}
+          {/* User logged-in status */}
           {username ? (
             <div className="flex items-center space-x-4">
               {/* Circle with First Letter */}

@@ -6,6 +6,7 @@ import UserContext from "../context/UserContext.js";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [formError, SetFormError] = useState(null)
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -23,19 +24,23 @@ const Login = () => {
       });
 
       const data = await response.json();
-    console.log("Login Response Data:", data);
+      console.log("Login Response Data:", data);
       if (data.success) {
         // Storing user and accessToken
-        setUser(data.user);
+        const res = data.data;
+        setUser(res.user);
 
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("user", JSON.stringify(data.user));
+
+        localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
+        localStorage.setItem("user", JSON.stringify(res.user));
 
         navigate("/dashboard");
       } else {
+        SetFormError(data.message)
         console.log("Login failed:", data.message);
       }
     } catch (error) {
+      SetFormError(error?.message)
       console.error("Error during login:", error);
     }
   };
@@ -47,6 +52,10 @@ const Login = () => {
         onSubmit={handleLogin}
       >
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+
+
+        {formError ? <div className="alert bg-red-500 text-white px-4 py-2 rounded-md my-4">{formError}</div> : undefined}
+
         <div className="mb-4">
           <label className="block text-gray-700">Email:</label>
           <input
