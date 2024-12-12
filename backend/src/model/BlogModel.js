@@ -21,7 +21,14 @@ const blogSchema = new mongoose.Schema({
         {
             type:String
         }
-    ]
+    ],
+    owner: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required: true
+    }
+
+
 })
 
 export const Blog = mongoose.model('Blog',blogSchema)

@@ -1,48 +1,53 @@
-import express from "express"
+import express from "express";
 import {
     createBlog,
     getAllBlogs,
     getBlogById,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    getUserBlogs, 
+} from "../controllers/Blog.controller.js";
 
-} from "../controllers/Blog.controller.js"
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
-import {upload} from "../middlewares/multer.middleware.js"
+const router = express.Router();
 
-const router  = express.Router();
-
-// create blog
-
+// Create Blog
 router.post(
     "/",
+    verifyJWT,
+    
     upload.fields([
         {
-            name:  "images",
-             maxCount:5
-        }
+            name: "images",
+            maxCount: 5,
+        },
     ]),
     createBlog
 );
 
-// getAllBlogs
+// Get All Blogs
+router.get("/", getAllBlogs);
 
-router.get("/",getAllBlogs)
-
-// get single 
 // Get Single Blog by ID
 router.get("/:id", getBlogById);
 
+// Get Blogs by Specific User
+router.get("/user/blogs", verifyJWT, getUserBlogs); 
 // Update Blog
 router.put(
     "/:id",
     upload.fields([
-        { name: "Image", maxCount:5}  // Limit to 5 images for the blog update
+        {
+            name: "images",
+            maxCount: 5,
+        },
     ]),
     updateBlog
 );
 
 // Delete Blog
-router.delete("/:id", deleteBlog);
+router.delete("/:id", verifyJWT,deleteBlog);
 
-export default router 
+export default router;
