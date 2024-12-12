@@ -1,6 +1,6 @@
 // src/App.js
-import React, { Children } from 'react';
-import { RouterProvider,createBrowserRouter,Routes, createRoutesFromElements, Route } from 'react-router-dom';
+import React, { Children, useEffect } from 'react';
+import { RouterProvider,createBrowserRouter,Routes, createRoutesFromElements, Route, useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import Signup from './components/Signup';
 import Login from './components/Login';
@@ -13,11 +13,17 @@ import Dashboard from './components/Dashboard.jsx'
 import Logout from './components/Logout.jsx';
 import CreateBlog from './pages/CreateBlog.jsx';
 import CreatePodcast from './pages/CreatePodcast.jsx';
-
+import { useAuth } from './context/UserContext.js';
 //  Define routes
-const ProtectedRoute = ({Children}) => {
-  const isLoggedIn = Boolean(localStorage.getItem("token"))
+//  Define routes
+const ProtectedRoute = ({ children }) => {
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+
 }
+ 
 const router = createBrowserRouter(
   createRoutesFromElements(
 
@@ -31,9 +37,9 @@ const router = createBrowserRouter(
     <Route path="/logout" element={<Logout /> } />
 
 
-    <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/createBlog" element={<ProtectedRoute><CreateBlog /></ProtectedRoute>} />
-      <Route path="/createPodcast" element={<ProtectedRoute><CreatePodcast /></ProtectedRoute>} />
+    <Route path="/dashboard" element={<Dashboard /> } />
+      <Route path="/createBlog" element={<CreateBlog />} />
+      <Route path="/createPodcast" element={<CreatePodcast />} />
       
 
 

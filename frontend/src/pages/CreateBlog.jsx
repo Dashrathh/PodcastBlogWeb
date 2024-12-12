@@ -48,8 +48,8 @@ const CreateBlog = () => {
         <div className="mb-4">
           <label className="block text-gray-700">Title</label>
           <Controller
-            name="title"
-            control={control}
+            name="title"   //This is the name of the field
+            control={control} //Linking React Hook Form with Controller
             defaultValue=""
             render={({ field }) => (
               <input

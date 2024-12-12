@@ -11,7 +11,6 @@ cloudinary.config({
 });
 
 /**
- * Uploads single or multiple files to Cloudinary.
  * @param {string | string[]} localFilePaths - Single file path or array of file paths.
  * @returns {Promise<string | string[]>} - Secure URL(s) of the uploaded file(s).
  */

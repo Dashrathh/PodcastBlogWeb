@@ -17,8 +17,11 @@ const Logout = () => {
                 // Log server response
                 console.log("Logout Response:", await response.json());
 
-                localStorage.removeItem("accessToken");
-                setUser(null);
+                localStorage.removeItem("user");
+                                setUser(null);
+
+                                localStorage.removeItem("accessToken");
+                                setUser(null)
 
 
                 // Redirect to login
