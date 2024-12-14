@@ -13,10 +13,7 @@ const blogSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    date:{
-        type:Date,
-        default:Date.now
-    },
+   
     images:[
         {
             type:String
@@ -26,9 +23,10 @@ const blogSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required: true
-    }
+    }, 
+    
 
 
-})
+},{timestamps:true})
 
 export const Blog = mongoose.model('Blog',blogSchema)

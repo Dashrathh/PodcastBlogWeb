@@ -34,10 +34,11 @@ router.get("/", getAllBlogs);
 router.get("/:id", getBlogById);
 
 // Get Blogs by Specific User
-router.get("/user/blogs", verifyJWT, getUserBlogs); 
+router.get("/user", verifyJWT, getUserBlogs); 
 // Update Blog
 router.put(
     "/:id",
+    verifyJWT,
     upload.fields([
         {
             name: "images",

@@ -36,7 +36,10 @@ const createPodcast = asyncHandler(async (req, res) => {
         description,
         author,
         audioFile:Audio,
-        thumbnail:PUBThumbnail
+        thumbnail:PUBThumbnail,
+        owner:req.userId
+        
+
     });
 
     res.status(201).json(new ApiResponse(201, newPodcast, "Podcast created successfully"));

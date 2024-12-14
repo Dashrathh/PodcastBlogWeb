@@ -11,10 +11,14 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
         if (!token) {
             throw new ApiError(401, "Unauthorized request: No token provided");
         }
+        // console.log(token);
+        
 
         // Verify token
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
+        // console.log(decodedToken);
+        
         // Check if the user exists in the database using the decoded token's user ID
         const user = await User.findById(decodedToken._id).select("-password -refreshToken");
 
@@ -23,7 +27,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
         }
 
         // Attach the user object to the request for further use in other routes
-        req.user = user;
+        req.userId = user;
         next(); // Proceed to the next middleware or route handler
 
     } catch (error) {

@@ -84,7 +84,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // Logout User
 const logoutUser = asyncHandler(async (req, res) => {
-    await User.findByIdAndUpdate(req.user._id, {
+    // console.log("Middleware req.user:", req.userId);      
+
+  const logoutUser =   await User.findByIdAndUpdate(req.userId, {
         $unset: {
             refreshToken: 1
         }
@@ -93,8 +95,9 @@ const logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
     res.status(200).json(
-        new ApiResponse(200, null, "User logged out successfully")
+        new ApiResponse(200, logoutUser, "User logged out successfully")
     );
 });
+
 
 export { registerUser, loginUser, logoutUser };

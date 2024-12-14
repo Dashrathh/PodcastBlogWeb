@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaBlog, FaPodcast, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios"
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const [podcasts, setPodcasts] = useState([]);
@@ -21,61 +21,68 @@ const Dashboard = () => {
 
       try {
         setLoadingBlogs(true);
-        const response = await fetch("http://localhost:4000/api/blogs/user/blogs", {
-          method: "GET",
+        const response = await axios.get("http://localhost:4000/api/blogs/", {
+
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        });
 
-        if (!response.ok) throw new Error("Failed to fetch blogs");
-        const data = await response.json();
-        setBlogs(data.data); // Assuming API response has a "data" field
+
+        })
+
+        setBlogs(response.data.data)
       } catch (error) {
-        console.error("Error fetching blogs:", error);
-        // alert("Failed to load blogs. Please try again.");
+        console.error("Error fetching blog: ", error)
+
       } finally {
-        setLoadingBlogs(false);
+        setLoadingBlogs(false)
       }
-    };
+
+
+
+    }
 
     fetchBlogs();
   }, [navigate]);
 
-  // Fetch Podcasts
+  // Fetch Podcasts // 
+
   useEffect(() => {
-    const fetchPodcasts = async () => {
-      const token = localStorage.getItem("accessToken");
+    const fetchPodcast = async () => {
+      const token = localStorage.getItem("accessToken")
       if (!token) {
-        // alert("Unauthorized access! Please log in.");
-        navigate("/login");
+        alert("unAuthorize token please login")
+        navigate('/login')
         return;
       }
 
       try {
-        setLoadingPodcasts(true);
-        const response = await fetch("http://localhost:4000/api/podcasts/user/podcasts", {
-          method: "GET",
+
+        const response = await axios.get("http://localhost:4000/api/podcasts", {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+            Authorization: `Bearer ${token}`
+          }
 
-        if (!response.ok) throw new Error("Failed to fetch podcasts");
-        const data = await response.json();
-        setPodcasts(data.data); // Assuming API response has a "data" field
+        })
+
+
+        setPodcasts(response.data.data)
+
       } catch (error) {
-        console.error("Error fetching podcasts:", error);
-        // alert("Failed to load podcasts. Please try again.");
-      } finally {
-        setLoadingPodcasts(false);
-      }
-    };
+        console.error("Error fetching podcast", error)
 
-    fetchPodcasts();
-  }, [navigate]);
+      } finally {
+        setLoadingPodcasts(false)
+
+      }
+    }
+ 
+    fetchPodcast()
+
+
+  }, [navigate])
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -104,20 +111,24 @@ const Dashboard = () => {
         <div className="flex flex-wrap justify-between mb-6">
           <button
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center space-x-2"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/createBlog")}
             aria-label="Create a new blog"
           >
             <FaPlus /> <span>Create New Blog</span>
           </button>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center space-x-2"
-            onClick={() => navigate("/create")}
+            onClick={() => navigate("/createPodcast")}
             aria-label="Create a new podcast"
           >
             <FaPlus /> <span>Upload New Podcast</span>
           </button>
         </div>
 
+        {/*  list of blog those uploaded u */}
+
+
+        
         <section className="mb-8">
           <h2 className="text-xl font-bold mb-4">My Blogs</h2>
           {loadingBlogs ? (
@@ -134,7 +145,7 @@ const Dashboard = () => {
                 <div className="flex space-x-4 mt-2">
                   <button
                     className="text-blue-500 hover:underline"
-                    onClick={() => navigate(`/edit/blog/${blog._id}`)}
+                    onClick={() => navigate(`/updateBlog/${blog._id}`)}
                   >
                     Edit
                   </button>
@@ -146,6 +157,8 @@ const Dashboard = () => {
             <p>No blogs available.</p>
           )}
         </section>
+
+     
 
         <section>
           <h2 className="text-xl font-bold mb-4">My Podcasts</h2>

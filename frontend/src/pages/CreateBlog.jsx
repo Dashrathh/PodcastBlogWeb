@@ -44,6 +44,7 @@ const CreateBlog = () => {
     <div className="container mx-auto mt-5">
       <h1 className="text-2xl font-bold mb-5">Create New Blog</h1>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      
         {/* Blog Title */}
         <div className="mb-4">
           <label className="block text-gray-700">Title</label>
