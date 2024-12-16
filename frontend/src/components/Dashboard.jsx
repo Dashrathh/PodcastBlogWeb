@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { FaBlog, FaPodcast, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
+import { useParams } from "react-router-dom";
+import { BACKEND_API } from "../util/api.js";
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const [podcasts, setPodcasts] = useState([]);
   const [loadingBlogs, setLoadingBlogs] = useState(true);
   const [loadingPodcasts, setLoadingPodcasts] = useState(true);
+
   const navigate = useNavigate();
 
   // Fetch Blogs
+
   useEffect(() => {
     const fetchBlogs = async () => {
       const token = localStorage.getItem("accessToken");
@@ -21,16 +25,18 @@ const Dashboard = () => {
 
       try {
         setLoadingBlogs(true);
-        const response = await axios.get("http://localhost:4000/api/blogs/", {
-
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await BACKEND_API.get("http://localhost:4000/api/blogs/user")
 
 
-        })
+        if (!response.data.data) {
+          const response = await BACKEND_API.get("http://localhost:4000/api/blogs/")
 
-        setBlogs(response.data.data)
+
+          setBlogs(response.data.data)
+        } else {
+          setBlogs(response.data.data)
+        }
+
       } catch (error) {
         console.error("Error fetching blog: ", error)
 
@@ -44,9 +50,7 @@ const Dashboard = () => {
 
     fetchBlogs();
   }, [navigate]);
-
   // Fetch Podcasts // 
-
   useEffect(() => {
     const fetchPodcast = async () => {
       const token = localStorage.getItem("accessToken")
@@ -58,16 +62,21 @@ const Dashboard = () => {
 
       try {
 
-        const response = await axios.get("http://localhost:4000/api/podcasts", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
 
-        })
+        setLoadingBlogs(true);
+        const response = await BACKEND_API.get("http://localhost:4000/api/podcasts/user")
 
 
-        setPodcasts(response.data.data)
+        console.log(response);
+        
+        if (!response.data.data) {
+          const response = await BACKEND_API.get("http://localhost:4000/api/podcasts")
+
+
+          setPodcasts(response.data.data)
+        } else {
+          setPodcasts(response.data.data)
+        }
 
       } catch (error) {
         console.error("Error fetching podcast", error)
@@ -77,11 +86,13 @@ const Dashboard = () => {
 
       }
     }
- 
+
     fetchPodcast()
 
 
   }, [navigate])
+
+
 
 
   return (
@@ -128,7 +139,7 @@ const Dashboard = () => {
         {/*  list of blog those uploaded u */}
 
 
-        
+
         <section className="mb-8">
           <h2 className="text-xl font-bold mb-4">My Blogs</h2>
           {loadingBlogs ? (
@@ -158,7 +169,7 @@ const Dashboard = () => {
           )}
         </section>
 
-     
+
 
         <section>
           <h2 className="text-xl font-bold mb-4">My Podcasts</h2>

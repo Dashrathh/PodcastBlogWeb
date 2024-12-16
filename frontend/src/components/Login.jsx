@@ -2,16 +2,18 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
-
+import { CircularProgress } from '@mui/material';
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, SetFormError] = useState(null)
   const { setUser } = useContext(UserContext);
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true) // loading start
     try {
       const response = await fetch("http://localhost:4000/api/user/Login", {
         method: "POST",
@@ -41,7 +43,9 @@ const Login = () => {
       }
     } catch (error) {
       SetFormError(error?.message)
+      setLoading(false)
       console.error("Error during login:", error);
+
     }
   };
 
@@ -76,12 +80,23 @@ const Login = () => {
             required
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-        >
-          Login
-        </button>
+        <button 
+  type="submit" 
+  className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 relative"
+  disabled={loading} // Disable button while loading
+
+> 
+  {loading ? (
+    <CircularProgress 
+      size="30px" 
+      color="inherit" 
+      style={{position: "absolute"}} 
+    />
+  ) : (
+    "Login"
+  )}
+</button>
+
         <p className="mt-4 text-center">
           Don't have an account?{" "}
           <Link to="/signup" className="text-blue-500 hover:underline">

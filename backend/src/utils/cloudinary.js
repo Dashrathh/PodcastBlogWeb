@@ -24,16 +24,17 @@ const uploadOnCloudinary = async (localFilePaths) => {
     try {
         const uploadPromises = filePaths.map(async (filePath) => {
             // Normalize path to handle Windows-style backslashes
+            
             const normalizedPath = filePath.path.replace(/\\/g, "/");            
 
             const response = await cloudinary.uploader.upload(normalizedPath, {
-                resource_type: "auto", // This will automatically detect image/video type
+                resource_type: "auto", 
             });
 
             // Delete the local file after uploading
             fs.unlinkSync(normalizedPath);
 
-            return response.secure_url; // Return Cloudinary URL
+            return response.secure_url; 
         });
 
         const uploadedUrls = await Promise.all(uploadPromises);

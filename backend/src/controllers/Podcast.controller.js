@@ -1,3 +1,4 @@
+import { log } from "console";
 import { Podcast } from "../model/Podcast.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -8,18 +9,18 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const createPodcast = asyncHandler(async (req, res) => {
     const { title, description, author } = req.body;
 
-    const audioLocalPath = req.files?.audioFile?.[0]?.path;
-    const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
+    const audioLocalPath = req.files?.audioFile?.[0]
+    const thumbnailLocalPath = req.files?.thumbnail?.[0]
 
     if (!title) {
         throw new ApiError(400, "Title is required");
     }
 
-    if (!audioLocalPath) {
+    if (!audioLocalPath.path ) {
         throw new ApiError(400, "Audio file is missing");
     }
 
-    if (!thumbnailLocalPath) {
+    if (!thumbnailLocalPath.path) {
         throw new ApiError(400, "Thumbnail is missing");
     }
 
@@ -37,7 +38,7 @@ const createPodcast = asyncHandler(async (req, res) => {
         author,
         audioFile:Audio,
         thumbnail:PUBThumbnail,
-        owner:req.userId
+        owner: req.userId
         
 
     });
@@ -68,6 +69,41 @@ const getPodcastById = asyncHandler(async (req, res) => {
 
     res.status(200).json(new ApiResponse(200, podcast, "Podcast fetched successfully"));
 });
+
+// get podcast user specific
+    
+  const getUserpodcast = asyncHandler (async(req,res) => {
+    const userId = req.userId;
+    // console.log(userId);
+    
+    if(!userId){
+        throw new ApiError(401, "Unauthorized access")
+    }
+        // const UserId = new mongoose.Types.ObjectId(userId)
+
+ 
+     
+        const podcast = await Podcast.find({owner:userId});
+        console.log("This is a podcast");
+        
+        if(!podcast || podcast.length === 0){
+            // check if podcasst array is empty
+
+            throw new ApiError(404,"No podcast found for this user");
+        
+        }
+
+        
+        // If podcast exist ,return them
+
+         res.status(200).json(
+            new ApiResponse(200,podcast, "User podcast fetched successfully")
+        );
+    });
+
+  
+
+  
 
 // Update Podcast
 const updatePodcast = asyncHandler(async (req, res) => {
@@ -107,6 +143,7 @@ const updatePodcast = asyncHandler(async (req, res) => {
 // Delete Podcast
 const deletePodcast = asyncHandler(async (req, res) => {
     const { podcastId } = req.params;
+    // const UserId = new mongoose.Types.ObjectId(userId)
 
     const podcast = await Podcast.findByIdAndDelete(podcastId);
     if (!podcast) {
@@ -117,4 +154,4 @@ const deletePodcast = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Podcast deleted successfully"));
 });
 
-export { createPodcast, getAllPodcasts, getPodcastById, updatePodcast, deletePodcast };
+export { createPodcast, getAllPodcasts, getPodcastById, updatePodcast, deletePodcast,getUserpodcast };

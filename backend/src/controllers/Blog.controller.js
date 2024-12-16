@@ -62,7 +62,7 @@ const getUserBlogs = asyncHandler(async (req, res) => {
     // const UserId = new mongoose.Types.ObjectId(userId)
 
     const blogs = await Blog.find({owner:userId });
-    console.log("This is a user specific blog",blogs);  
+    // console.log("This is a user specific blog",blogs);  
     
     res.status(200).json(new ApiResponse(200, blogs, "User blogs fetched successfully"));
 });

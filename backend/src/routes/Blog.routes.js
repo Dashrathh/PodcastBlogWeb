@@ -26,7 +26,8 @@ router.post(
     ]),
     createBlog
 );
-
+// user's blog
+router.get("/user", verifyJWT, getUserBlogs); 
 // Get All Blogs
 router.get("/", getAllBlogs);
 
@@ -34,7 +35,6 @@ router.get("/", getAllBlogs);
 router.get("/:id", getBlogById);
 
 // Get Blogs by Specific User
-router.get("/user", verifyJWT, getUserBlogs); 
 // Update Blog
 router.put(
     "/:id",
