@@ -22,7 +22,7 @@ export default function RTE({ name, control, label, defaultValue = "" }) {
                 "image", "advlist", "autolink", "lists", "link", "charmap",
                 "preview", "anchor", "searchreplace", "visualblocks", "code",
                 "fullscreen", "insertdatetime", "media", "table", "help",
-                "wordcount", "codesample", "emoticons", "autosave", "spellchecker"
+                "wordcount", "codesample", "emoticons", "autosave", 
               ],
               toolbar:
                 "undo redo | formatselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | codesample emoticons fullscreen",

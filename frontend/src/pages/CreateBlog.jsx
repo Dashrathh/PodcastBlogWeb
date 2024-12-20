@@ -22,9 +22,10 @@ const CreateBlog = () => {
         formData.append("images", file);
       });
 
-      const response = await fetch("http://localhost:4000/api/blogs/", {
+      const response = await fetch("http://localhost:4000/api/blogs", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {

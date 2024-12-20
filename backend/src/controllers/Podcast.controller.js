@@ -111,6 +111,7 @@ const updatePodcast = asyncHandler(async (req, res) => {
     const { title, description, author } = req.body;
 
 
+    // log("podcast ID:",podcastId);
     
     
     const podcast = await Podcast.findById(podcastId);
@@ -118,8 +119,12 @@ const updatePodcast = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Podcast not found");
     }
 
-    const audioLocalPath = req.files?.audioFile?.[0]?.path;
-    const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
+    log("podcast:",podcast);
+    const audioLocalPath = req.files?.audioFile?.[0]
+    const thumbnailLocalPath = req.files?.thumbnail?.[0]
+
+    // log("audioLocalPath:",audioLocalPath);
+    // log("thumbnailLocalPath:",thumbnailLocalPath);
 
     if (audioLocalPath) {
         const Audio = await uploadOnCloudinary(audioLocalPath);

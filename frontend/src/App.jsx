@@ -15,6 +15,9 @@ import CreateBlog from './pages/CreateBlog.jsx';
 import CreatePodcast from './pages/CreatePodcast.jsx';
 import { useAuth } from './context/UserContext.js';
 import UpdateBlog from './pages/UpadateBlog.jsx';
+import DeleteBlog from './pages/DeleteBlog.jsx';
+import DeletePodcast from './pages/DeletePodcast.jsx';
+import About from './pages/About.jsx';
 //  Define routes
 //  Define routes
 const ProtectedRoute = ({ children }) => {
@@ -41,7 +44,10 @@ const router = createBrowserRouter(
     <Route path="/dashboard" element={<Dashboard /> } />
       <Route path="/createBlog" element={<CreateBlog />} />
       <Route path="/createPodcast" element={<CreatePodcast />} />
-      <Route path="/updateBlog/:id" element={<UpdateBlog />} />
+      <Route path="/updateBlog/:blogId" element={<UpdateBlog />} />
+      <Route path="/deleteBlog/:blogId" element = {<DeleteBlog/>}/>
+      <Route path="/deletePodcast/:podcastId" element = {<DeletePodcast/>}/>
+      <Route path="/about" element={<About />} /> 
 
 
       

@@ -88,6 +88,7 @@ const updateBlog = asyncHandler(async (req, res) => {
 
 // Delete Blog
 const deleteBlog = asyncHandler(async (req, res) => {
+
     const blog = await Blog.findByIdAndDelete(req.params.id);
     if (!blog) throw new ApiError(404, "Blog not found");
 

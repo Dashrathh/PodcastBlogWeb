@@ -25,7 +25,7 @@ const Signup = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username, email, fullname, password }), // No confirmPassword now
+                body: JSON.stringify({ username, email, fullname, password }), 
             });
 
             if (!response.ok) {

@@ -68,7 +68,7 @@ const Dashboard = () => {
 
 
         console.log(response);
-        
+
         if (!response.data.data) {
           const response = await BACKEND_API.get("http://localhost:4000/api/podcasts")
 
@@ -160,7 +160,9 @@ const Dashboard = () => {
                   >
                     Edit
                   </button>
-                  <button className="text-red-500 hover:underline">Delete</button>
+                  <button
+                    onClick={() => navigate(`/deleteBlog/${blog._id}`)}
+                    className="text-red-500 hover:underline">Delete</button>
                 </div>
               </div>
             ))
@@ -191,7 +193,9 @@ const Dashboard = () => {
                   >
                     Edit
                   </button>
-                  <button className="text-red-500 hover:underline">Delete</button>
+
+                  <button className="text-red-500 hover:underline"
+                    onClick={() => navigate(`/deletepodcast/${podcast._id}`)}>Delete</button>
                 </div>
               </div>
             ))

@@ -7,6 +7,10 @@ const Header = () => {
   const { user, setUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  }
   useEffect(() => {
     // Fetch the user data from localStorage on component mount
     const storeData = localStorage.getItem("user");
@@ -79,14 +83,17 @@ const Header = () => {
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
               <div className="hidden sm:flex flex-col items-start">
-                <span className="font-medium">
-                  {user.username || "User"}{" "}
-                  <Link
+              <Link
                     to="/dashboard"
                     className="text-sm text-indigo-300 hover:text-indigo-100 transition-colors duration-200"
                   >
                     Dashboard
                   </Link>
+                
+                <span  
+                onClick={toggleMenu}
+                className="font-medium">
+                  {user.username || "User"}{" "}  
                 </span>
               </div>
               <Link

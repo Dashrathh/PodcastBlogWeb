@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import RTE from "../components/RTE";
 
-const UpdateBlog = ({ blogId }) => {
+const UpdateBlog = () => {
     const [blog, setBlog] = useState(null); // Blog data
     const [title, setTitle] = useState("");
     const [content, setContent] = useState(""); // Blog content
@@ -10,14 +13,20 @@ const UpdateBlog = ({ blogId }) => {
     const [newImages, setNewImages] = useState([]);
     const [message, setMessage] = useState("");
 
+    const { blogId } = useParams();
+    const { handleSubmit, control, register } = useForm();
+
     // Fetch blog data by ID
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await axios.put(
-                    `http://localhost:4000/api/blogs/${blogId}`
+                const response = await axios.get(
+                    `http://localhost:4000/api/blogs/${blogId}`, {
+                    withCredentials: true,
+                }
+
                 );
-                const data = response.data;
+                const data = response.data.data;
                 setBlog(data);
                 setTitle(data.title);
                 setContent(data.content);
@@ -31,8 +40,8 @@ const UpdateBlog = ({ blogId }) => {
     }, [blogId]);
 
     // Handle form submit
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (data) => {
+
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
@@ -48,6 +57,7 @@ const UpdateBlog = ({ blogId }) => {
                 `http://localhost:4000/api/blogs/${blogId}`,
                 formData,
                 {
+                    withCredentials: true,
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -64,31 +74,40 @@ const UpdateBlog = ({ blogId }) => {
         <div>
             <h1>Update Blog</h1>
             {blog ? (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Title:</label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                <form onSubmit={handleSubmit(onSubmit)}>
+
+                    {/* Blog Title */}
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Title</label>
+                        <Controller
+                            defaultValue={title}
+                            name="title"   //This is the name of the field
+                            control={control} //Linking React Hook Form with Controller
+                            render={({ field }) => (
+                                <input
+                                    {...field}
+                                    className="border p-2 w-full"
+                                    placeholder="Enter blog title"
+                                    required
+                                />
+                            )}
                         />
                     </div>
-                    <div>
-                        <label>Author:</label>
+
+                    {/* Author */}
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Author</label>
                         <input
-                            type="text"
                             value={author}
-                            onChange={(e) => setAuthor(e.target.value)}
+                            {...register("author", { required: true })}
+                            className="border p-2 w-full"
+                            placeholder="Enter author name"
                         />
                     </div>
-                    <div>
-                        <label>Content:</label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            rows="10"
-                            cols="50"
-                        />
+
+                    {/* Blog Content */}
+                    <div className="mb-4">
+                        <RTE name="content" defaultValue={content} control={control} label="Content" />
                     </div>
                     <div>
                         <label>Current Images:</label>

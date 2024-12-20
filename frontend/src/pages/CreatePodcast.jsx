@@ -35,11 +35,11 @@ const CreatePodcast = () => {
       formDataToSend.append("thumbnail", formData.thumbnail);
       formDataToSend.append("author", formData.author);
 
-      const response = await fetch("http://localhost:4000/api/podcasts", {
+      const response = await fetch("http://localhost:4000/api/podcasts/audio", {
         method: "POST",
         body: formDataToSend,
+        credentials:"include",
       });
-
       const result = await response.json();
 
       if (result.success) {
