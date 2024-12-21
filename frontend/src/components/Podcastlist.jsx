@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { FaPlay, FaPause } from "react-icons/fa"; // Icons for play and pause
+import React, { useEffect, useState, useRef } from "react";
+import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa"; // Icons for play, pause, forward, backward
 
 const PodcastList = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(null);
   const [playingPodcastId, setPlayingPodcastId] = useState(null);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const progressBarRef = useRef(null);
 
   // Fetch podcasts from the API
   useEffect(() => {
@@ -38,9 +42,47 @@ const PodcastList = () => {
 
       const newAudio = new Audio(audioUrl);
       newAudio.play();
+      newAudio.playbackRate = playbackSpeed; // Set playback speed
       setCurrentAudio(newAudio);
       setPlayingPodcastId(podcastId);
+      setDuration(newAudio.duration);
+
+      newAudio.addEventListener("timeupdate", () => {
+        setCurrentTime(newAudio.currentTime);
+      });
+
+      newAudio.addEventListener("loadedmetadata", () => {
+        setDuration(newAudio.duration);
+      });
+
+      newAudio.addEventListener("ended", () => {
+        setPlayingPodcastId(null);
+      });
     }
+  };
+
+  // Function to change playback speed
+  const changePlaybackSpeed = (speed) => {
+    if (currentAudio) {
+      currentAudio.playbackRate = speed;
+    }
+    setPlaybackSpeed(speed);
+  };
+
+  // Function to handle manual seek
+  const handleSeek = (e) => {
+    const seekTime = (e.target.value / 100) * duration;
+    if (currentAudio) {
+      currentAudio.currentTime = seekTime;
+      setCurrentTime(seekTime);
+    }
+  };
+
+  // Format time as mm:ss
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
@@ -79,6 +121,61 @@ const PodcastList = () => {
                   )}
                 </button>
               </div>
+              {playingPodcastId === podcast._id && (
+                <div className="mt-4 flex flex-col items-center space-y-2">
+                  <div className="flex justify-around w-full">
+                    <button
+                      onClick={() => currentAudio && (currentAudio.currentTime = Math.max(currentAudio.currentTime - 10, 0))}
+                      className="text-sm text-blue-600"
+                    >
+                      <FaBackward className="mr-1" /> -10s
+                    </button>
+                    <button
+                      onClick={() => currentAudio && (currentAudio.currentTime = Math.min(currentAudio.currentTime + 10, currentAudio.duration))}
+                      className="text-sm text-blue-600"
+                    >
+                      +10s <FaForward className="ml-1" />
+                    </button>
+                  </div>
+                  <input
+                    type="range"
+                    className="w-full mt-2"
+                    min="0"
+                    max="100"
+                    value={(currentTime / duration) * 100 || 0}
+                    onChange={handleSeek}
+                  />
+                  <div className="text-gray-600 text-sm mt-1">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </div>
+                  <div className="flex space-x-4 items-center">
+                    <button
+                      onClick={() => changePlaybackSpeed(0.5)}
+                      className={`py-1 px-2 rounded ${playbackSpeed === 0.5 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+                    >
+                      0.5x
+                    </button>
+                    <button
+                      onClick={() => changePlaybackSpeed(1)}
+                      className={`py-1 px-2 rounded ${playbackSpeed === 1 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+                    >
+                      1x
+                    </button>
+                    <button
+                      onClick={() => changePlaybackSpeed(1.5)}
+                      className={`py-1 px-2 rounded ${playbackSpeed === 1.5 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+                    >
+                      1.5x
+                    </button>
+                    <button
+                      onClick={() => changePlaybackSpeed(2)}
+                      className={`py-1 px-2 rounded ${playbackSpeed === 2 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+                    >
+                      2x
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (

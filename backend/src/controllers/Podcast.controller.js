@@ -128,12 +128,12 @@ const updatePodcast = asyncHandler(async (req, res) => {
 
     if (audioLocalPath) {
         const Audio = await uploadOnCloudinary(audioLocalPath);
-        podcast.audioFile = Audio.url;
+        podcast.audioFile = Audio;
     }
 
     if (thumbnailLocalPath) {
         const PUBThumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-        podcast.thumbnail = PUBThumbnail.url;
+        podcast.thumbnail = PUBThumbnail;
     }
 
     podcast.title = title || podcast.title;

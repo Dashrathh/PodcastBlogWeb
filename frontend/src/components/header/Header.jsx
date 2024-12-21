@@ -6,11 +6,11 @@ import { useAuth } from "../../context/UserContext";
 const Header = () => {
   const { user, setUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+const [dropdownOpen,setDropdownOpen] = useState(false);
 
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  }
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
   useEffect(() => {
     // Fetch the user data from localStorage on component mount
     const storeData = localStorage.getItem("user");

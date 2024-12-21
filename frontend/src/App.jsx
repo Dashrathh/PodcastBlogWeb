@@ -18,7 +18,8 @@ import UpdateBlog from './pages/UpadateBlog.jsx';
 import DeleteBlog from './pages/DeleteBlog.jsx';
 import DeletePodcast from './pages/DeletePodcast.jsx';
 import About from './pages/About.jsx';
-//  Define routes
+import UpdatePodcast from './pages/UpdatePodcast.jsx';
+//  Define route
 //  Define routes
 const ProtectedRoute = ({ children }) => {
 
@@ -48,6 +49,8 @@ const router = createBrowserRouter(
       <Route path="/deleteBlog/:blogId" element = {<DeleteBlog/>}/>
       <Route path="/deletePodcast/:podcastId" element = {<DeletePodcast/>}/>
       <Route path="/about" element={<About />} /> 
+      <Route path="/updatePodcast/:podcastId" element={<UpdatePodcast />} /> 
+
 
 
       

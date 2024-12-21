@@ -189,9 +189,8 @@ const Dashboard = () => {
                 <div className="flex space-x-4 mt-2">
                   <button
                     className="text-blue-500 hover:underline"
-                    onClick={() => navigate(`/edit/podcast/${podcast._id}`)}
-                  >
-                    Edit
+                    onClick={() => navigate(`/updatepodcast/${podcast._id}`)}
+                  >Edit
                   </button>
 
                   <button className="text-red-500 hover:underline"
