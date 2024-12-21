@@ -6,19 +6,14 @@ import { useAuth } from "../../context/UserContext";
 const Header = () => {
   const { user, setUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-const [dropdownOpen,setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
 
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
   useEffect(() => {
-    // Fetch the user data from localStorage on component mount
     const storeData = localStorage.getItem("user");
     if (storeData) {
       const parsedData = JSON.parse(storeData);
       setUser(parsedData);
     }
-
     return () => {
       setUser(null); // Cleanup on unmount
     };
@@ -78,31 +73,33 @@ const [dropdownOpen,setDropdownOpen] = useState(false);
 
           {/* User Section */}
           {user ? (
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 flex items-center justify-center bg-white text-indigo-700 font-bold rounded-full">
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)} // Open dropdown on hover
+              onMouseLeave={() => setTimeout(() => setDropdownOpen(false), 600)} // Add delay before hiding
+            >
+              {/* Circle with First Letter */}
+              <div className="w-10 h-10 flex items-center justify-center bg-white text-indigo-700 font-bold rounded-full cursor-pointer">
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
-              <div className="hidden sm:flex flex-col items-start">
-              <Link
+
+              {/* Dropdown */}
+              {dropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 bg-white text-indigo-700 rounded shadow-lg w-48 z-50">
+                  <Link
                     to="/dashboard"
-                    className="text-sm text-indigo-300 hover:text-indigo-100 transition-colors duration-200"
+                    className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
                   >
                     Dashboard
                   </Link>
-                
-                <span  
-                onClick={toggleMenu}
-                className="font-medium">
-                  {user.username || "User"}{" "}  
-                </span>
-              </div>
-              <Link
-                to="/logout"
-                className="flex items-center space-x-2 text-sm hover:text-indigo-300 transition-colors duration-200"
-              >
-                <FaSignOutAlt />
-                <span>Logout</span>
-              </Link>
+                  <Link
+                    to="/logout"
+                    className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
+                  >
+                    Logout
+                  </Link>
+                </div>
+              )}
             </div>
           ) : (
             <Link
