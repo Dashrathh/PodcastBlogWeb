@@ -32,7 +32,7 @@ router.get("/user", verifyJWT, getUserBlogs);
 router.get("/", getAllBlogs);
 
 // Get Single Blog by ID
-router.get("/id", getBlogById);
+router.get("/:id", getBlogById);
 
 // Get Blogs by Specific User
 // Update Blog

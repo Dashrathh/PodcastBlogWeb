@@ -18,7 +18,7 @@ const BlogDetails = () => {
       } catch (error) {
         console.error("Error fetching blog details:", error.message);
       }
-      if(!response.ok){
+      if(!blog){
         console.error("Failed to fetch blog details.");
       }
     };
@@ -26,13 +26,13 @@ const BlogDetails = () => {
     fetchBlogDetails();
   }, [id]);
 
-  // if (!blog) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen text-xl">
-  //       Loading blog details...
-  //     </div>
-  //   );
-  // }
+  if (!blog) {
+    return (
+      <div className="flex items-center justify-center h-screen text-xl">
+        Loading blog details...
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen p-6">
