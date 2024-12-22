@@ -108,16 +108,16 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <section className="bg-blue-950 text-white py-40">
+    <div className="bg-gray-50 min-h-screen">
+      <section className="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-40">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Podcasts & Blogs</h1>
-          <p className="text-lg mb-6">
+          <h1 className="text-5xl font-extrabold mb-6">Welcome to Podcasts & Blogs</h1>
+          <p className="text-lg mb-8 max-w-xl mx-auto">
             Dive into a world of engaging podcasts and insightful blogs curated
             just for you.
           </p>
           <button
-            className="bg-white text-blue-600 py-2 px-6 rounded font-semibold hover:bg-gray-100 transition duration-300"
+            className="bg-white text-blue-600 py-3 px-8 rounded-full font-semibold shadow-lg hover:bg-gray-100 transition duration-300"
             onClick={() => navigate("/about")}
           >
             Learn More
@@ -125,30 +125,35 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-8">
-        <h2 className="text-2xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+      <section className="py-12">
+        <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-2">
           <FaMicrophoneAlt /> Explore Podcasts
         </h2>
-        <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
           {podcasts.map((podcast) => (
-            <div key={podcast._id} className="bg-white shadow-md rounded-md p-4">
+            <div
+              key={podcast._id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+            >
               <img
                 src={podcast.thumbnail}
                 alt={podcast.title}
-                className="w-full h-40 object-cover rounded"
+                className="w-full h-48 object-cover"
               />
-              <h3 className="text-xl font-bold mt-2">{podcast.title}</h3>
-              <p className="text-gray-600 mt-1">{podcast.description}</p>
-              <div className="mt-4">
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2 truncate">{podcast.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {podcast.description.slice(0, 60)}...
+                </p>
                 <button
-                  className="bg-blue-500 text-white py-1 px-4 rounded flex items-center gap-1 mb-2"
+                  className="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center gap-1 shadow-md hover:bg-blue-600 transition-colors"
                   onClick={() => handlePlayPause(podcast.audioFile, podcast._id)}
                 >
                   {playingPodcastId === podcast._id ? <FaPause /> : <FaPlay />}
                   {playingPodcastId === podcast._id ? "Pause" : "Play"}
                 </button>
                 {playingPodcastId === podcast._id && (
-                  <>
+                  <div className="mt-4">
                     <input
                       type="range"
                       min="0"
@@ -157,7 +162,7 @@ const Home = () => {
                       onChange={handleSeek}
                       className="w-full"
                     />
-                    <div className="text-sm flex justify-between mt-1">
+                    <div className="flex justify-between text-sm mt-1">
                       <span>{formatTime(currentTime)}</span>
                       <span>{formatTime(duration)}</span>
                     </div>
@@ -177,12 +182,11 @@ const Home = () => {
                           step="0.1"
                           value={volume}
                           onChange={handleVolumeChange}
-                          className="w-24"
-
+                          className="w-20"
                         />
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
@@ -190,28 +194,33 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-8">
-        <h2 className="text-2xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+      <section className="py-12">
+        <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-2">
           <FaBookOpen /> Latest Blogs
         </h2>
-        <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {blogs.map((blog) => (
-            <div key={blog._id} className="bg-white shadow-md rounded-md p-4">
+            <div
+              key={blog._id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+            >
               <img
                 src={blog.images?.[0] || "https://via.placeholder.com/150"}
                 alt={blog.title}
-                className="w-full h-40 object-cover rounded"
+                className="w-full h-48 object-cover"
               />
-              <h3 className="text-xl font-bold mt-2">{blog.title}</h3>
-              <p className="text-gray-600 mt-1">
-                {blog.content.slice(0, 50)}...
-              </p>
-              <button
-                className="bg-green-500 text-white py-1 px-4 mt-4 rounded hover:bg-green-600"
-                onClick={() => navigate(`/blog/${blog._id}`)}
-              >
-                Read Blog
-              </button>
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2 truncate">{blog.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {blog.content.slice(0, 60)}...
+                </p>
+                <button
+                  className="bg-green-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-green-600 transition-colors"
+                  onClick={() => navigate(`/blog/${blog._id}`)}
+                >
+                  Read Blog
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -19,6 +19,8 @@ import DeleteBlog from './pages/DeleteBlog.jsx';
 import DeletePodcast from './pages/DeletePodcast.jsx';
 import About from './pages/About.jsx';
 import UpdatePodcast from './pages/UpdatePodcast.jsx';
+import { ToastContainer } from 'react-toastify';
+import ErrorPage from './pages/ErrorPage.jsx';
 //  Define route
 //  Define routes
 const ProtectedRoute = ({ children }) => {
@@ -50,6 +52,7 @@ const router = createBrowserRouter(
       <Route path="/deletePodcast/:podcastId" element = {<DeletePodcast/>}/>
       <Route path="/about" element={<About />} /> 
       <Route path="/updatePodcast/:podcastId" element={<UpdatePodcast />} /> 
+      <Route path="*" element={<ErrorPage />} />
 
 
 
@@ -67,6 +70,7 @@ function App () {
   return (
     <UserContextProvider>
 <RouterProvider router={router} />
+<ToastContainer/>
     </UserContextProvider>
   )
       

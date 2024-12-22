@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UpdatePodcast = () => {
     const [formData, setFormData] = useState({
-
         title: "",
         description: "",
         audioFile: null,
@@ -12,8 +12,7 @@ const UpdatePodcast = () => {
         author: "",
     });
 
-    const [podcast, setPodcast] = useState(null)
-
+    const [podcast, setPodcast] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -30,22 +29,29 @@ const UpdatePodcast = () => {
     };
 
     const handleSubmit = async (e) => {
-
+        e.preventDefault();
         setLoading(true);
         setMessage("");
 
         try {
-            const formDataToSend = new FormData(e.target);
-
-            const response = await fetch(`http://localhost:4000/api/podcasts/${podcastId}`, {
-                method: "PUT",
-                body: formDataToSend,
-                credentials: "include",
+            const formDataToSend = new FormData();
+            Object.keys(formData).forEach((key) => {
+                formDataToSend.append(key, formData[key]);
             });
+
+            const response = await fetch(
+                `http://localhost:4000/api/podcasts/${podcastId}`,
+                {
+                    method: "PUT",
+                    body: formDataToSend,
+                    credentials: "include",
+                }
+            );
             const result = await response.json();
 
             if (result.success) {
                 setMessage("Podcast Updated successfully!");
+                toast.success("Podcast Updated successfully!");
                 setFormData({
                     title: "",
                     description: "",
@@ -59,125 +65,143 @@ const UpdatePodcast = () => {
         } catch (error) {
             console.error("Error Updating podcast:", error.message);
             setMessage("An error occurred. Please try again.");
+            toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-
     useEffect(() => {
-
         async function fetchPodcast() {
             setLoading(true);
             try {
-
-                const response = await axios.get(`http://localhost:4000/api/podcasts/${podcastId}`, {
-                    withCredentials: true,
-                })
-
-                setPodcast(response.data.data)
-
-
-                setLoading(false)
+                const response = await axios.get(
+                    `http://localhost:4000/api/podcasts/${podcastId}`,
+                    { withCredentials: true }
+                );
+                setPodcast(response.data.data);
+                setLoading(false);
             } catch (error) {
-                console.log(error);
-                setMessage(error?.message)
-                setLoading(false)
+                console.error(error);
+                setMessage("Error fetching podcast data.");
+                setLoading(false);
             }
         }
 
         fetchPodcast();
-
-    }, [podcastId])
+    }, [podcastId]);
 
     return (
-        <div className="container mx-auto mt-5">
-            <h1 className="text-2xl font-bold mb-5">Update Podcast</h1>
+        <div className="container mx-auto p-6 sm:p-8 bg-gray-50 rounded shadow-lg">
+            <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                Update Podcast
+            </h1>
 
-            {loading ? <h1>Loading...</h1> :
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Title */}
+            {loading ? (
+                <div className="flex justify-center items-center h-64">
+                    <svg
+                        className="animate-spin h-12 w-12 text-blue-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                        ></circle>
+                        <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C6.477 0 0 6.477 0 12h4z"
+                        ></path>
+                    </svg>
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-gray-700">Title</label>
+                        <label className="block text-gray-700 font-medium">Title</label>
                         <input
                             type="text"
                             name="title"
                             defaultValue={podcast?.title}
                             onChange={handleInputChange}
-                            className="border w-full p-2"
+                            className="border w-full p-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                             placeholder="Enter podcast title"
                             required
                         />
                     </div>
 
-                    {/* Description */}
                     <div>
-                        <label className="block text-gray-700">Description</label>
+                        <label className="block text-gray-700 font-medium">Description</label>
                         <textarea
                             name="description"
                             defaultValue={podcast?.description}
                             onChange={handleInputChange}
-                            className="border w-full p-2"
+                            className="border w-full p-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                             placeholder="Enter podcast description"
+                            rows="4"
                         ></textarea>
                     </div>
 
-                    {/* Audio File */}
                     <div>
-                        <label className="block text-gray-700">Audio File</label>
-                        {podcast ? <audio controls>
-                            <source src={podcast.audioFile} />
-                        </audio> : undefined}
-                        or
+                        <label className="block text-gray-700 font-medium">Audio File</label>
+                        {podcast?.audioFile && (
+                            <audio controls className="mb-2 w-full">
+                                <source src={podcast.audioFile} />
+                            </audio>
+                        )}
                         <input
                             type="file"
                             name="audioFile"
                             onChange={handleFileChange}
                             accept="audio/*"
-                            className="w-full p-2"
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                         />
                     </div>
 
-                    {/* Thumbnail */}
                     <div>
-                        <label className="block text-gray-700">Thumbnail</label>
+                        <label className="block text-gray-700 font-medium">Thumbnail</label>
                         <input
                             type="file"
                             name="thumbnail"
                             onChange={handleFileChange}
                             accept="image/*"
-                            className="w-full p-2"
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                         />
                     </div>
 
-                    {/* Author */}
                     <div>
-                        <label className="block text-gray-700">Author</label>
+                        <label className="block text-gray-700 font-medium">Author</label>
                         <input
                             type="text"
                             name="author"
                             defaultValue={podcast?.author}
                             onChange={handleInputChange}
-                            className="border w-full p-2"
+                            className="border w-full p-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                             placeholder="Enter author name"
                             required
                         />
                     </div>
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className={`bg-blue-500 text-white px-4 py-2 rounded ${loading ? "opacity-50" : ""
-                            }`}
+                        className={`w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                            loading && "opacity-50 cursor-not-allowed"
+                        }`}
                         disabled={loading}
                     >
                         {loading ? "Updating..." : "Update Podcast"}
                     </button>
                 </form>
-            }
-            {/* Success/Error Message */}
-            {message && <p className="mt-4 text-center">{message}</p>}
+            )}
+
+            {message && (
+                <p className="mt-4 text-center text-gray-700 font-medium">{message}</p>
+            )}
         </div>
     );
 };

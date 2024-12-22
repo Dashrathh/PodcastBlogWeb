@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const DeleteBlog = () => {
   const { podcastId } = useParams(); // Get blogId from URL
@@ -27,12 +28,14 @@ const DeleteBlog = () => {
             withCredentials: true,
           });
           setMessage("podcast deleted successfully!");
+          toast.success("podcast deleted successfully!");
           setError("");
           // Redirect after successful deletion (e.g., to blog list page)
           navigate("/podcasts");
         } catch (err) {
           console.error("Error deleting podcast:", err.response?.data || err.message);
           setError("Failed to delete the podcast. Please try again.");
+            toast.error("Failed to delete the podcast. Please try again.");
           setMessage("");
         }
       } else {

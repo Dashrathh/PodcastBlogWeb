@@ -8,8 +8,10 @@ import UserContextProvider from './context/UserContextProvider.jsx'
 
   
 createRoot(document.getElementById('root')).render(
+
   <StrictMode>
     <UserContextProvider>
+
     <App />
     </UserContextProvider>
   </StrictMode>,

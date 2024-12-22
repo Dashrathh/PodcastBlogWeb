@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import { toast } from "react-toastify";
 
 const Logout = () => {
     const { setUser } = useContext(UserContext); // Access user context
@@ -22,7 +23,7 @@ const Logout = () => {
 
                                 localStorage.removeItem("accessToken");
                                 setUser(null)
-
+              toast.success("Logged out successfully!");
 
                 // Redirect to login
                 navigate("/login");

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,6 +32,7 @@ const Login = () => {
         const res = data.data;
         setUser(res.user);
 
+         
         localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
         localStorage.setItem("user", JSON.stringify(res.user));
 
