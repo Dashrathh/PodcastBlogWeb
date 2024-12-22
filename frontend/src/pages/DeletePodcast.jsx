@@ -31,7 +31,7 @@ const DeleteBlog = () => {
           toast.success("podcast deleted successfully!");
           setError("");
           // Redirect after successful deletion (e.g., to blog list page)
-          navigate("/podcasts");
+          navigate("/dashboard");
         } catch (err) {
           console.error("Error deleting podcast:", err.response?.data || err.message);
           setError("Failed to delete the podcast. Please try again.");

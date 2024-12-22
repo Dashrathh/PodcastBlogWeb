@@ -52,7 +52,7 @@ const router = createBrowserRouter(
       <Route path="/deletePodcast/:podcastId" element = {<DeletePodcast/>}/>
       <Route path="/about" element={<About />} /> 
       <Route path="/updatePodcast/:podcastId" element={<UpdatePodcast />} /> 
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="*" Element={<ErrorPage />} />
 
 
 

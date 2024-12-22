@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const DeleteBlog = () => {
   const { blogId } = useParams(); // Get blogId from URL
@@ -27,9 +28,10 @@ const DeleteBlog = () => {
             withCredentials: true,
           });
           setMessage("Blog deleted successfully!");
+          toast.success("Blog deleted successfully!");
           setError("");
           // Redirect after successful deletion (e.g., to blog list page)
-          navigate("/blogs");
+          navigate("/dashboard");
         } catch (err) {
           console.error("Error deleting blog:", err.response?.data || err.message);
           setError("Failed to delete the blog. Please try again.");

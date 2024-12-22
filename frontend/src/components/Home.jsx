@@ -210,9 +210,9 @@ const Home = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-xl font-bold mb-2 truncate">{blog.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {blog.content.slice(0, 60)}...
+                <h3 className="text-xl font-bold mb-2 truncate" >{blog.title}</h3>
+                <p className="text-gray-600 text-sm mb-4" dangerouslySetInnerHTML={{ __html:blog.content .slice(0, 60)}}>
+                  {/* {blog.content.slice(0, 60)}... */}
                 </p>
                 <button
                   className="bg-green-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-green-600 transition-colors"

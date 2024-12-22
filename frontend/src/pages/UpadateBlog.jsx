@@ -135,9 +135,8 @@ const UpdateBlog = () => {
 
                     <button
                         type="submit"
-                        className={`flex items-center justify-center bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:bg-blue-600 ${
-                          loading ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                        className={`flex items-center justify-center bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                     >
                         {loading ? (
                             <div className="flex items-center">

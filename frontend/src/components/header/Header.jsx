@@ -80,7 +80,7 @@ const Header = () => {
             >
               {/* Circle with First Letter */}
               <div className="w-10 h-10 flex items-center justify-center bg-white text-indigo-700 font-bold rounded-full cursor-pointer">
-                {user?.username?.charAt(0).toUpperCase() || "U"}
+                {user?.username?.charAt(0).toUpperCase() || ""}
               </div>
 
               {/* Dropdown */}
