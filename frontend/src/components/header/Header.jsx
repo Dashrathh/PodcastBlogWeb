@@ -20,8 +20,8 @@ const Header = () => {
   }, []);
 
   return (
-<header className="bg-gradient-to-r from-blue-900 to-gray-800 text-white shadow-lg py-4">
-<div className="container mx-auto px-4 py-4 flex justify-between items-center">
+<header className="bg-gradient-to-r from-blue-900 to-gray-800 text-white shadow-lg py-2">
+<div className="container mx-auto px-2 py-2 flex justify-between items-center">
         {/* Left Section - Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <FaMicrophone className="text-2xl" />

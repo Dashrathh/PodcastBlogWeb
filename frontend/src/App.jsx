@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }) => {
 const router = createBrowserRouter(
   createRoutesFromElements(
 
-   <Route path='/' element={<Layout/>}>
+   <Route path='/' element={<Layout/>} errorElement={<ErrorPage />}>
     <Route path="/signup" element= {<Signup/>}/>
     <Route path="/login" element = {<Login/>}/>
     <Route path="" element = {<Home/>} />
@@ -52,7 +52,7 @@ const router = createBrowserRouter(
       <Route path="/deletePodcast/:podcastId" element = {<DeletePodcast/>}/>
       <Route path="/about" element={<About />} /> 
       <Route path="/updatePodcast/:podcastId" element={<UpdatePodcast />} /> 
-      <Route path="*" Element={<ErrorPage />} />
+      {/* <Route path="*" Element={<ErrorPage />} /> */}
 
 
 
@@ -70,7 +70,7 @@ function App () {
   return (
     <UserContextProvider>
 <RouterProvider router={router} />
-<ToastContainer/>
+<ToastContainer  theme='colored'/>
     </UserContextProvider>
   )
       

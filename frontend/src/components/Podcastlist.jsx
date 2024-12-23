@@ -93,7 +93,7 @@ const PodcastList = () => {
           podcasts.map((podcast) => (
             <div
               key={podcast._id}
-              className="bg-white shadow-md rounded-md p-4 hover:shadow-lg transition-shadow"
+              className="bg-white shadow-md rounded-md p-4 hover:shadow-lg transition-shadow  object-cover"
             >
               <img
                 src={podcast.thumbnail}

@@ -33,6 +33,7 @@ router.get("/", getAllBlogs);
 
 // Get Single Blog by ID
 router.get("/:id", getBlogById);
+// console.error);
 
 // Get Blogs by Specific User
 // Update Blog

@@ -7,7 +7,7 @@ const BlogDetails = () => {
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
-      try {
+      
         const response = await fetch(`http://localhost:4000/api/blogs/${id}`);
         const result = await response.json();
         if (result.success) {
@@ -15,13 +15,12 @@ const BlogDetails = () => {
         } else {
           console.error("Failed to fetch blog details.");
         }
-      } catch (error) {
-        console.error("Error fetching blog details:", error.message);
+    
       }
       if(!blog){
         console.error("Failed to fetch blog details.");
       }
-    };
+    
 
     fetchBlogDetails();
   }, [id]);
@@ -72,14 +71,14 @@ const BlogDetails = () => {
 
           {/* Image Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blog.images?.slice(1).map((image, index) => (
+            {blog.images?.slice(3).map((image, index) => (
               <div
                 key={index}
                 className="bg-white shadow-md rounded-md overflow-hidden hover:scale-105 transform transition duration-300"
               >
                 <img
                   src={image || "https://via.placeholder.com/300"}
-                  alt={`Additional ${blog.title}`}
+                  // alt={`Additional ${blog.title}`}
                   className="w-full h-48 object-cover"
                 />
               </div>

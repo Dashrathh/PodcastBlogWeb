@@ -35,7 +35,7 @@ const DeleteBlog = () => {
         } catch (err) {
           console.error("Error deleting podcast:", err.response?.data || err.message);
           setError("Failed to delete the podcast. Please try again.");
-            toast.error("Failed to delete the podcast. Please try again.");
+            // toast.error("Failed to delete the podcast. Please try again.");
           setMessage("");
         }
       } else {

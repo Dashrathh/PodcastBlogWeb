@@ -44,7 +44,7 @@ const BlogList = () => {
                 className="w-full h-40 object-cover rounded"
               />
               <h3 className="text-xl font-bold mt-2">{blog.title}</h3>
-              <p className="text-gray-600 mt-1">{blog.content.slice(0, 50)}...</p>
+              {/* <p className="text-gray-600 mt-1">{blog.content.slice(0, 50)}...</p> */}
               <p className="text-sm text-gray-500 mt-1">Author: {blog.author}</p>
               <button
                 className="mt-4 bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600 transition duration-300"
