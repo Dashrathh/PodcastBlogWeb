@@ -84,7 +84,7 @@ const getPodcastById = asyncHandler(async (req, res) => {
  
      
         const podcast = await Podcast.find({owner:userId});
-        console.log("This is a podcast");
+        // console.log("This is a podcast");
         
         if(!podcast || podcast.length === 0){
             // check if podcasst array is empty
@@ -119,7 +119,7 @@ const updatePodcast = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Podcast not found");
     }
 
-    log("podcast:",podcast);
+    // log("podcast:",podcast);
     const audioLocalPath = req.files?.audioFile?.[0]
     const thumbnailLocalPath = req.files?.thumbnail?.[0]
 
