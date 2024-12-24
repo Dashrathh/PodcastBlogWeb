@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api";
 
 const Logout = () => {
     const { setUser } = useContext(UserContext); // Access user context
@@ -9,21 +10,15 @@ const Logout = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:4000/api/user/logout", {
-                method: "POST",
-                credentials: "include", 
-              });
-
-            if (response.ok) {
-                // Log server response
-                console.log("Logout Response:", await response.json());
+            const response = await BACKEND_API.post("/user/logout");
+            if (response.data) {
 
                 localStorage.removeItem("user");
-                                setUser(null);
+                setUser(null);
 
-                                localStorage.removeItem("accessToken");
-                                setUser(null)
-              toast.success("Logged out successfully!");
+                localStorage.removeItem("accessToken");
+                setUser(null)
+                toast.success("Logged out successfully!");
 
                 // Redirect to login
                 navigate("/login");

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api";
 
 const CreatePodcast = () => {
   const [formData, setFormData] = useState({
@@ -36,12 +37,9 @@ const CreatePodcast = () => {
       formDataToSend.append("thumbnail", formData.thumbnail);
       formDataToSend.append("author", formData.author);
 
-      const response = await fetch("http://localhost:4000/api/podcasts/audio", {
-        method: "POST",
-        body: formDataToSend,
-        credentials:"include",
-      });
-      const result = await response.json();
+      const response = await BACKEND_API.post("/podcasts/audio", formDataToSend);
+
+      const result = response.data;
 
       if (result.success) {
         setMessage("Podcast created successfully!");

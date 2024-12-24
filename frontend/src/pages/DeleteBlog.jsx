@@ -20,7 +20,7 @@ const DeleteBlog = () => {
     const deleteBlog = async () => {
       if (window.confirm("Are you sure you want to delete this blog?")) {
         try {
-          await axios.delete(`http://localhost:4000/api/blogs/${blogId}`, {
+          await axios.delete(`/blogs/${blogId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               

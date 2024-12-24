@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa"; // Icons for play, pause, forward, backward
+import { BACKEND_API } from "../util/api";
 
 const PodcastList = () => {
   const [podcasts, setPodcasts] = useState([]);
@@ -14,11 +15,10 @@ const PodcastList = () => {
   useEffect(() => {
     const fetchPodcasts = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/podcasts");
-        const result = await response.json();
-
-        if (result.success && Array.isArray(result.data)) {
-          setPodcasts(result.data);
+        const response = await BACKEND_API.get("/podcasts");
+        
+        if (response.data && Array.isArray(response.data.data)) {
+          setPodcasts(response.data.data);
         } else {
           setPodcasts([]); // Fallback if the API response is invalid
         }

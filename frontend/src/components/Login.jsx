@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,31 +17,19 @@ const Login = () => {
     e.preventDefault();
     setLoading(true); // loading start
     try {
-      const response = await fetch("http://localhost:4000/api/user/Login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "include", // Added to include cookies in the request
+      const response = await BACKEND_API.post("/user/Login", {
+        email,
+        password,
       });
 
-      const data = await response.json();
-      console.log("Login Response Data:", data);
-      if (data.success) {
-        // Storing user and accessToken
-        const res = data.data;
-        setUser(res.user);
+      const res = response.data.data;
+      setUser(res.user);
 
-         
-        localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
-        localStorage.setItem("user", JSON.stringify(res.user));
+      localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
+      localStorage.setItem("user", JSON.stringify(res.user));
 
-        navigate("/dashboard");
-      } else {
-        SetFormError(data.message);
-        console.log("Login failed:", data.message);
-      }
+      navigate("/dashboard");
+
     } catch (error) {
       SetFormError(error?.message);
       console.error("Error during login:", error);
@@ -89,12 +78,12 @@ const Login = () => {
           disabled={loading} // Disable button while loading
         >
           {loading ? (
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              
-           ) : (
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+
+          ) : (
             "Login"
           )}
         </button>
