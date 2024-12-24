@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { BACKEND_API } from "../util/api";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -8,9 +9,9 @@ const BlogDetails = () => {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       
-        const response = await fetch(`http://localhost:4000/api/blogs/${id}`);
-        const result = await response.json();
-        if (result.success) {
+        const response = await BACKEND_API.get(`/blogs/${id}`);
+        const result = response.data
+        if (result.data) {
           setBlog(result.data);
         } else {
           console.error("Failed to fetch blog details.");
