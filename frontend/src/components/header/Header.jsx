@@ -20,8 +20,8 @@ const Header = () => {
   }, []);
 
   return (
-<header className="bg-gradient-to-r from-blue-900 to-gray-800 text-white shadow-lg py-2">
-<div className="container mx-auto px-2 py-2 flex justify-between items-center">
+    <header className="bg-gradient-to-r from-blue-900 to-gray-800 text-white shadow-lg py-2">
+      <div className="container mx-auto px-2 py-2 flex justify-between items-center">
         {/* Left Section - Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <FaMicrophone className="text-2xl" />
@@ -38,9 +38,8 @@ const Header = () => {
 
         {/* Right Section - Navigation */}
         <nav
-          className={`${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0 fixed top-0 left-0 sm:static h-full sm:h-auto w-3/4 sm:w-auto bg-indigo-800 sm:bg-transparent z-50 sm:z-auto flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6 items-start sm:items-center p-8 sm:p-0 transform transition-transform duration-300 ease-in-out`}
+          className={`${menuOpen ? "translate-x-0" : "-translate-x-full"
+            } sm:translate-x-0 fixed top-0 left-0 sm:static h-full sm:h-auto w-3/4 sm:w-auto bg-indigo-800 sm:bg-transparent z-50 sm:z-auto flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6 items-start sm:items-center p-8 sm:p-0 transform transition-transform duration-300 ease-in-out`}
         >
           <Link
             to="/"
@@ -73,33 +72,41 @@ const Header = () => {
 
           {/* User Section */}
           {user ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setDropdownOpen(true)} // Open dropdown on hover
-              onMouseLeave={() => setTimeout(() => setDropdownOpen(false), 600)} // Add delay before hiding
-            >
-              {/* Circle with First Letter */}
-              <div className="w-10 h-10 flex items-center justify-center bg-white text-indigo-700 font-bold rounded-full cursor-pointer">
-                {user?.username?.charAt(0).toUpperCase() || ""}
-              </div>
-
-              {/* Dropdown */}
-              {dropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 bg-white text-indigo-700 rounded shadow-lg w-48 z-50">
-                  <Link
-                    to="/dashboard"
-                    className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    to="/logout"
-                    className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
-                  >
-                    Logout
-                  </Link>
+            <div className="flex items-center gap-2">
+              <div
+                className="relative"
+                onMouseEnter={() => setDropdownOpen(true)} // Open dropdown on hover
+                onMouseLeave={() => setTimeout(() => setDropdownOpen(false), 600)} // Add delay before hiding
+              >
+                {/* Circle with First Letter */}
+                <div className="w-10 h-10 flex items-center justify-center bg-white text-indigo-700 font-bold rounded-full cursor-pointer">
+                  {user?.username?.charAt(0).toUpperCase() || ""}
                 </div>
-              )}
+
+                {/* Dropdown */}
+                {dropdownOpen && (
+                  <div className="absolute top-full right-0 mt-2 bg-white text-indigo-700 rounded shadow-lg w-48 z-50">
+                    <Link
+                      to="/dashboard"
+                      className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/logout"
+                      className="block px-4 py-2 hover:bg-indigo-100 transition-colors duration-1000"
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                )}
+              </div>
+              <Link
+                to="/logout"
+                className="block px-4 py-2"
+              >
+                Logout
+              </Link>
             </div>
           ) : (
             <Link
