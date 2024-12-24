@@ -45,7 +45,7 @@ app.use("/api/podcasts", podcastRoutes)
 /**
  * Error Handing
  */
-app.use((err, req, res,  next) => {
+app.use((err, req, res,  next) => { 
     if (err?.statusCode) {
         return res.status(err.statusCode || 500).json(err);
     }
