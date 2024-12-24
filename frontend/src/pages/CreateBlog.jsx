@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import RTE from "../components/RTE";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api";
 
 const CreateBlog = () => {
   const { handleSubmit, control, register } = useForm();
@@ -23,13 +24,9 @@ const CreateBlog = () => {
         formData.append("images", file);
       });
 
-      const response = await fetch("http://localhost:4000/api/blogs", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await BACKEND_API.post("/blogs", formData);
 
-      if (response.ok) {
+      if (response.data) {
         setMessage("Blog successfully created!");
         toast.success("Blog successfully created!");
       } else {

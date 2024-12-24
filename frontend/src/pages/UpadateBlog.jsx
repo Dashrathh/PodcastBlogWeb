@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import RTE from "../components/RTE";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api";
 
 const UpdateBlog = () => {
     const [blog, setBlog] = useState(null);
@@ -20,10 +21,7 @@ const UpdateBlog = () => {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await axios.get(
-                    `http://localhost:4000/api/blogs/${blogId}`,
-                    { withCredentials: true }
-                );
+                const response = await BACKEND_API.get(`/blogs/${blogId}`);
                 const data = response.data.data;
                 setBlog(data);
                 setTitle(data.title);
@@ -50,11 +48,9 @@ const UpdateBlog = () => {
         }
 
         try {
-            await axios.put(
-                `http://localhost:4000/api/blogs/${blogId}`,
+            await BACKEND_API.put(`/blogs/${blogId}`,
                 formData,
                 {
-                    withCredentials: true,
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
