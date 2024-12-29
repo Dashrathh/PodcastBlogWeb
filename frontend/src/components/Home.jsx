@@ -18,6 +18,7 @@ const Home = () => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
+  const[loading,setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,9 +28,11 @@ const Home = () => {
         const response = await fetch("http://localhost:4000/api/podcasts");
         const result = await response.json();
         setPodcasts(result.success ? result.data.slice(0, 4) : []);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching podcasts:", error.message);
       }
+      
     };
 
     const fetchBlogs = async () => {
@@ -192,7 +195,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> 
 
       <section className="py-12">
         <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-2">
