@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { BACKEND_API } from "../util/api";
 
 const Signup = () => {
     const [username, setUsername] = useState("");
@@ -20,18 +21,14 @@ const Signup = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:4000/api/user/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, email, fullname, password }), 
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Signup failed");
-            }
+            const response = await BACKEND_API.post("/user/register",
+                {
+                    username,
+                    email,
+                    password,
+                    fullname,
+                }
+            );
 
             setError(""); // Clear error if signup is successful
            

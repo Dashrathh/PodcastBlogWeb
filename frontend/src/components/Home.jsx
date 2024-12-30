@@ -9,6 +9,7 @@ import {
   FaBookOpen,
   FaVolumeUp,
 } from "react-icons/fa";
+import { BACKEND_API } from "../util/api";
 
 const Home = () => {
   const [podcasts, setPodcasts] = useState([]);
@@ -28,7 +29,6 @@ const Home = () => {
         const response = await fetch("http://localhost:4000/api/podcasts");
         const result = await response.json();
         setPodcasts(result.success ? result.data.slice(0, 4) : []);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching podcasts:", error.message);
       }
@@ -37,9 +37,8 @@ const Home = () => {
 
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/blogs");
-        const result = await response.json();
-        setBlogs(result.success ? result.data.slice(0, 4) : []);
+        const response = await BACKEND_API.get("/blogs");
+        setBlogs(response.data?.data ? response.data.data.slice(0, 4) : []);
       } catch (error) {
         console.error("Error fetching blogs:", error.message);
       }

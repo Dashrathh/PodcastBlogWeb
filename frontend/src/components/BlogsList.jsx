@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_API } from "../util/api";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
@@ -9,10 +10,10 @@ const BlogList = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/blogs");
-        const result = await response.json();
+        const response = await BACKEND_API("/blogs");
+        const result = await response.data;
 
-        if (result.success && Array.isArray(result.data)) {
+        if (result.data && Array.isArray(result.data)) {
           setBlogs(result.data);
         } else {
           setBlogs([]); // Fallback if the API response is invalid

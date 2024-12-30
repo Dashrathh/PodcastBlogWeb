@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const BACKEND_API = axios.create({
-    baseURL: "http://localhost:4000/api",
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
     timeout: 60 * 1000,
 })
@@ -15,8 +15,6 @@ BACKEND_API.interceptors.request.use(function (config) {
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-    } else {
-        store.dispatch(resetUser());
     }
 
     return config;
@@ -43,9 +41,12 @@ BACKEND_API.interceptors.response.use(
                 error.response.data.errors &&
                 error.response.data.errors.name === "TokenExpiredError") {
                 try {
-                    await refreshToken();
+                    /**
+                     * TO DO: Refresh Token
+                     */
+                    // await refreshToken();
 
-                    return BACKEND_API(originalRequest);
+                    // return BACKEND_API(originalRequest);
                 } catch (refreshError) {
                     return Promise.reject(refreshError);
                 }

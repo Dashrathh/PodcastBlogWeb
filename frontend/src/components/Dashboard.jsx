@@ -25,11 +25,11 @@ const Dashboard = () => {
 
       try {
         setLoadingBlogs(true);
-        const response = await BACKEND_API.get("http://localhost:4000/api/blogs/user")
+        const response = await BACKEND_API.get("/blogs/user")
 
 
         if (!response.data.data) {
-          const response = await BACKEND_API.get("http://localhost:4000/api/blogs/")
+          const response = await BACKEND_API.get("/blogs/")
 
 
           setBlogs(response.data.data)
@@ -64,14 +64,10 @@ const Dashboard = () => {
 
 
         setLoadingBlogs(true);
-        const response = await BACKEND_API.get("http://localhost:4000/api/podcasts/user")
-
-
-        console.log(response);
+        const response = await BACKEND_API.get("/podcasts/user")
 
         if (!response.data.data) {
-          const response = await BACKEND_API.get("http://localhost:4000/api/podcasts")
-
+          const response = await BACKEND_API.get("/podcasts")
 
           setPodcasts(response.data.data)
         } else {

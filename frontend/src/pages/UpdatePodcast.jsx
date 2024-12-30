@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BACKEND_API } from "../util/api";
 
 const UpdatePodcast = () => {
     const [formData, setFormData] = useState({
@@ -34,22 +35,16 @@ const UpdatePodcast = () => {
         setMessage("");
 
         try {
-            const formDataToSend = new FormData();
-            Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
-            });
+            const formDataToSend = new FormData(e.target);
 
-            const response = await fetch(
-                `http://localhost:4000/api/podcasts/${podcastId}`,
-                {
-                    method: "PUT",
-                    body: formDataToSend,
-                    credentials: "include",
-                }
+            const response = await BACKEND_API.put(
+                `/podcasts/${podcastId}`,
+                formDataToSend,
+
             );
-            const result = await response.json();
+           
 
-            if (result.success) {
+            if (response.data) {
                 setMessage("Podcast Updated successfully!");
                 toast.success("Podcast Updated successfully!");
                 setFormData({
@@ -75,10 +70,7 @@ const UpdatePodcast = () => {
         async function fetchPodcast() {
             setLoading(true);
             try {
-                const response = await axios.get(
-                    `http://localhost:4000/api/podcasts/${podcastId}`,
-                    { withCredentials: true }
-                );
+                const response = await BACKEND_API.get( `/podcasts/${podcastId}`);
                 setPodcast(response.data.data);
                 setLoading(false);
             } catch (error) {
@@ -189,9 +181,8 @@ const UpdatePodcast = () => {
 
                     <button
                         type="submit"
-                        className={`w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${
-                            loading && "opacity-50 cursor-not-allowed"
-                        }`}
+                        className={`w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${loading && "opacity-50 cursor-not-allowed"
+                            }`}
                         disabled={loading}
                     >
                         {loading ? "Updating..." : "Update Podcast"}
