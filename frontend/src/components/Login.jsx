@@ -28,13 +28,14 @@ const Login = () => {
       localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
       localStorage.setItem("user", JSON.stringify(res.user));
 
+      toast.success("Login successful");
       navigate("/dashboard");
 
     } catch (error) {
       SetFormError(error?.message);
       console.error("Error during login:", error);
     } finally {
-      setLoading(false); // Ensure loading stops in case of success or failure
+      setLoading(false); 
     }
   };
 

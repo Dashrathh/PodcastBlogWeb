@@ -26,7 +26,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPodcasts = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/podcasts");
+        const response = await BACKEND_API.get("/podcasts");
         const result = await response.json();
         setPodcasts(result.success ? result.data.slice(0, 4) : []);
       } catch (error) {
