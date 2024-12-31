@@ -27,8 +27,8 @@ const Home = () => {
     const fetchPodcasts = async () => {
       try {
         const response = await BACKEND_API.get("/podcasts");
-        const result = await response.json();
-        setPodcasts(result.success ? result.data.slice(0, 4) : []);
+        // const result = await response.json();
+        setPodcasts(response.data ? response.data.data.slice(0, 4) : []);
       } catch (error) {
         console.error("Error fetching podcasts:", error.message);
       }
