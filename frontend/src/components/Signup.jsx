@@ -29,12 +29,14 @@ const Signup = () => {
                     fullname,
                 }
             );
+                  toast.success("signup successful");
+            
+                  navigate("/dashboard"); 
 
-            setError(""); // Clear error if signup is successful
+            setError(""); l
            
-            navigate("/dashboard"); // Redirect to login page after signup
         } catch (error) {
-            setError(error.message); // Display error if any
+            setError(error); 
         }
     };
 
