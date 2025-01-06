@@ -31,9 +31,9 @@ const Signup = () => {
             );
                   toast.success("signup successful");
             
-                  navigate("/dashboard"); 
 
             setError(""); l
+            navigate("/dashboard"); 
            
         } catch (error) {
             setError(error); 
