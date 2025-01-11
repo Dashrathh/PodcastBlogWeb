@@ -21,6 +21,7 @@ import About from './pages/About.jsx';
 import UpdatePodcast from './pages/UpdatePodcast.jsx';
 import { ToastContainer } from 'react-toastify';
 import ErrorPage from './pages/ErrorPage.jsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 //  Define route
 //  Define routes
 const ProtectedRoute = ({ children }) => {
@@ -68,10 +69,13 @@ const router = createBrowserRouter(
 
 function App () {
   return (
+<GoogleOAuthProvider clientId="504705502272-emnlmsqe0nil3oqf23r9kkta005bv061.apps.googleusercontent.com">
     <UserContextProvider>
 <RouterProvider router={router} />
 <ToastContainer  theme='colored'/>
     </UserContextProvider>
+    </GoogleOAuthProvider>
+   
   )
       
 }
