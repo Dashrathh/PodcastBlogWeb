@@ -20,13 +20,13 @@ const Signup = () => {
     const token = response.credential;
 
     try {
-      const response = await BACKEND_API.post("/api/user/auth/google", { credential: token });
+      const response = await BACKEND_API.post("/user/auth/google", { credential: token });
       toast.success("Google Login Successful")
 
       const res = response.data;
       setUser(res.user);
 
-      localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
+      localStorage.setItem("accessToken", res.accessToken);
       localStorage.setItem("user", JSON.stringify(res.user));
 
       navigate("/dashboard");

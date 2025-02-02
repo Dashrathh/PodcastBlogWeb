@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaBlog, FaPodcast, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
-import { useParams } from "react-router-dom";
 import { BACKEND_API } from "../util/api.js";
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -17,6 +15,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       const token = localStorage.getItem("accessToken");
+      console.log(token);
+
       if (!token) {
         alert("Unauthorized access! Please log in.");
         navigate("/login");
@@ -43,8 +43,6 @@ const Dashboard = () => {
       } finally {
         setLoadingBlogs(false)
       }
-
-
 
     }
 

@@ -25,7 +25,7 @@ const Login = () => {
       const res = response.data.data;
       setUser(res.user);
 
-      localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
+      localStorage.setItem("accessToken", res.accessToken);
       localStorage.setItem("user", JSON.stringify(res.user));
 
       toast.success("Login successful");
