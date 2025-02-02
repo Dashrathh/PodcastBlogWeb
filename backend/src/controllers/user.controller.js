@@ -3,9 +3,9 @@ import { User } from "../model/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {OAuth2Client } from 'google-auth-library';
-
-
+import { OAuth2Client } from 'google-auth-library';
+import { decodeJwtResponse } from "../utils/helper.js";
+import jwt from "jsonwebtoken"
 
 // Register User
 const registerUser = asyncHandler(async (req, res) => {
@@ -56,14 +56,14 @@ const loginUser = asyncHandler(async (req, res) => {
     const isPasswordValid = await user.comparePassword(password);
 
     console.log(isPasswordValid);
-    
+
     if (!isPasswordValid) {
         throw new ApiError(401, "Invalid user credentials");
     }
 
     const accessToken = user.generateAccessToken()
     const refreshToken = user.generateRefreshToken()
-    
+
 
 
 
@@ -91,7 +91,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
     // console.log("Middleware req.user:", req.userId);      
 
-  const logoutUser = await User.findByIdAndUpdate(req.userId, {
+    const logoutUser = await User.findByIdAndUpdate(req.userId, {
         $unset: {
             refreshToken: 1
         }
@@ -108,60 +108,58 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
-const googleLogin = asyncHandler(async(req,res) => {
+const googleLogin = asyncHandler(async (req, res) => {
 
-    const {credential  } = req.body; // token from react
+    const { credential } = req.body; // token from react
 
-    console.log(credential );
-    
-
-    if(!credential ){
-        throw new ApiError("credetial not found")
+    if (!credential) {
+        throw new ApiError("credential not found")
     }
 
-    // google id token verifyid
+    const decodedToken = decodeJwtResponse(credential);
 
-    const ticket = await client.verifyIdToken({
-        idToken:credential ,
-        audience:process.env.GOOGLE_CLIENT_ID
-    })
+    const socialUser = {
+        sub: decodedToken.sub,
+        email: decodedToken.email,
+        name: decodedToken.name,
+        username: decodedToken.name.toLowerCase().replace(/ /g, '_'),
+        picture: decodedToken.picture,
+    }
 
-    const payload = ticket.getPayload() // verifyed user data takes
+    const { email, name, username, picture, sub } = socialUser;
 
-   const {email,name,picture} = payload;
-      
-      // check if user exist
+    // check if user exist
 
-      const user = await User.findOne({email,name})
-      if(!user){
-        user = await User.create({
-            email,
-            name,
-            googleId:sub,
-            profilePic:picture
+    let user = await User.findOne({ email })
+    if (!user) {
+        user = User.create({
+            email: socialUser.email,
+            username: socialUser.username,
+            name: socialUser.name,
+            googleId: socialUser.sub,
+            profilePic: socialUser.picture,
+            password: " ",
         })
-      }
-      
-      const accessToken = jwt.sign(
-        {id:user._id,email,name},
+    }
+
+    const accessToken = jwt.sign(
+        { id: user._id, email, name },
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: "15m"}
+        { expiresIn: "15m" }
     );
     res.status(200).json({
-        success:true,
-        message:"User loged successfully",
+        success: true,
+        message: "User loged successfully",
         user: {
-            id:user._id,
-            name:user.name,
-            email:payload.sub,
-            profilePic: user.profilePic,
+            id: user._id,
+            name: user.name,
+            email: socialUser.email,
+            profilePic: socialUser.picture,
 
         },
         accessToken
-
-
     })
 
 })
 
-export { registerUser, loginUser, logoutUser ,googleLogin};
+export { registerUser, loginUser, logoutUser, googleLogin };
