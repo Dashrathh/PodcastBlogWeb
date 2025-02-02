@@ -1,7 +1,12 @@
+// import { verify } from "jsonwebtoken";
 import { User } from "../model/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import {OAuth2Client } from 'google-auth-library';
+
+
+
 // Register User
 const registerUser = asyncHandler(async (req, res) => {
     const { email, password, username } = req.body;
@@ -100,4 +105,63 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 
-export { registerUser, loginUser, logoutUser };
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+const googleLogin = asyncHandler(async(req,res) => {
+
+    const {credential } = req.body; // token from react
+
+    console.log(credential);
+    
+
+    if(!credential){
+        throw new ApiError("credetial not found")
+    }
+
+    // google id token verifyid
+
+    const ticket = await client.verifyIdToken({
+        idToken:credetial,
+        audience:process.env.GOOGLE_CLIENT_ID
+    })
+
+    const payload = ticket.getPayload() // verifyed user data takes
+
+   const {email,name,picture} = payload;
+      
+      // check if user exist
+
+      const user = await User.findOne({email,name})
+      if(!user){
+        user = await User.create({
+            email,
+            name,
+            googleId:sub,
+            profilePic:picture
+        })
+      }
+      
+      const accessToken = jwt.sign(
+        {id:user._id,email,name},
+        process.env.ACCESS_TOKEN_SECRET,
+        {expiresIn: "15m"}
+    );
+    res.status(200).json({
+        success:true,
+        message:"User loged successfully",
+        user: {
+            id:user_id,
+            name:user.name,
+            email:user.email,
+            profilePic: user.profilePic,
+
+        },
+        accessToken
+
+
+    })
+
+})
+
+export { registerUser, loginUser, logoutUser ,googleLogin};

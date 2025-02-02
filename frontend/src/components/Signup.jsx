@@ -14,8 +14,10 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSuccess = (response) => {
-    console.log("Google Login Success:", response);
-    // Here, you can handle Google login success, e.g., send the response to the backend.
+
+    const token = response.credential;
+
+    console.log("Google Login Success:", token);
   };
 
   const handleError = (error) => {

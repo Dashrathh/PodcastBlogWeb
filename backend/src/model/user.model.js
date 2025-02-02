@@ -26,6 +26,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required'],
     },
+    loginProvider: {
+      type: String,
+      default: "google"
+    },
     refreshToken: {
       type: String,
     },
