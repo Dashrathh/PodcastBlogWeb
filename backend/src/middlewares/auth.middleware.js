@@ -4,6 +4,21 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
+
+    // Check token in cookies or Authorization header (Bearer token)
+    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "").trim();
+
+    if (!token) {
+        throw new ApiError(401, "Unauthorized request: No token provided");
+    }
+    // console.log(token);
+
+
+    // Verify token
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    console.log(decodedToken);
+
     try {
         // Check token in cookies or Authorization header (Bearer token)
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "").trim();
@@ -12,15 +27,20 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
             throw new ApiError(401, "Unauthorized request: No token provided");
         }
         // console.log(token);
-        
+
 
         // Verify token
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
         // console.log(decodedToken);
-        
-        // Check if the user exists in the database using the decoded token's user ID
-        const user = await User.findById(decodedToken._id).select("-password -refreshToken");
+        let user;
+
+        if (decodedToken.socialUser) {
+            user = await User.find({ email: decodedToken.email }).select("-password -refreshToken");
+        } else {
+            // Check if the user exists in the database using the decoded token's user ID
+            user = await User.findById(decodedToken._id).select("-password -refreshToken");
+        }
 
         if (!user) {
             throw new ApiError(401, "Invalid or expired token");

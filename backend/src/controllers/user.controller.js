@@ -132,7 +132,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
     let user = await User.findOne({ email })
     if (!user) {
-        user = User.create({
+        user = await User.create({
             email: socialUser.email,
             username: socialUser.username,
             name: socialUser.name,
@@ -143,19 +143,18 @@ const googleLogin = asyncHandler(async (req, res) => {
     }
 
     const accessToken = jwt.sign(
-        { id: user._id, email, name },
+        { id: user._id, email, name, socialUser: true },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" }
     );
     res.status(200).json({
         success: true,
-        message: "User loged successfully",
+        message: "User logged in successfully",
         user: {
             id: user._id,
             name: user.name,
             email: socialUser.email,
             profilePic: socialUser.picture,
-
         },
         accessToken
     })
