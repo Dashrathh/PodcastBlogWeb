@@ -91,7 +91,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
     // console.log("Middleware req.user:", req.userId);      
 
-  const logoutUser =   await User.findByIdAndUpdate(req.userId, {
+  const logoutUser = await User.findByIdAndUpdate(req.userId, {
         $unset: {
             refreshToken: 1
         }
@@ -110,19 +110,19 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 const googleLogin = asyncHandler(async(req,res) => {
 
-    const {credential } = req.body; // token from react
+    const {credential  } = req.body; // token from react
 
-    console.log(credential);
+    console.log(credential );
     
 
-    if(!credential){
+    if(!credential ){
         throw new ApiError("credetial not found")
     }
 
     // google id token verifyid
 
     const ticket = await client.verifyIdToken({
-        idToken:credetial,
+        idToken:credential ,
         audience:process.env.GOOGLE_CLIENT_ID
     })
 
@@ -151,9 +151,9 @@ const googleLogin = asyncHandler(async(req,res) => {
         success:true,
         message:"User loged successfully",
         user: {
-            id:user_id,
+            id:user._id,
             name:user.name,
-            email:user.email,
+            email:payload.sub,
             profilePic: user.profilePic,
 
         },
