@@ -13,12 +13,13 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSuccess = (response) => {
 
+
+  const handleSuccess = async(response) => {
     const token = response.credential;
 
     try {
-        const res = await BACKEND_API.post("/user/auth/google" , {token});
+        const res = await BACKEND_API.post("/api/user/auth/google" , {token});
           toast.success("Google Login Successfull")
 
           navigate("/dashboard");
@@ -43,7 +44,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await BACKEND_API.post("/user/register", {
+      const response = await BACKEND_API.post("api/user/register", {
         username,
         email,
         password,
