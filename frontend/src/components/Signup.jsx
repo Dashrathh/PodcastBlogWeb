@@ -17,6 +17,15 @@ const Signup = () => {
 
     const token = response.credential;
 
+    try {
+        const res = await BACKEND_API.post("/user/auth/google" , {token});
+          toast.success("Google Login Successfull")
+
+          navigate("/dashboard");
+
+    } catch (error) {
+      toast.err("Google Login Failed")
+    }
     console.log("Google Login Success:", token);
   };
 
