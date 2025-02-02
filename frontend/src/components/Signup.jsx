@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify"; // For toast notifications
 import { BACKEND_API } from "../util/api";
+import UserContext from "../context/UserContext";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -11,23 +12,28 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [fullname, setFullname] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
 
 
   const handleSuccess = async (response) => {
     const token = response.credential;
 
     try {
-      const res = await BACKEND_API.post("/api/user/auth/google", { credential: token });
-      toast.success("Google Login Successfull")
+      const response = await BACKEND_API.post("/api/user/auth/google", { credential: token });
+      toast.success("Google Login Successful")
+
+      const res = response.data;
+      setUser(res.user);
+
+      localStorage.setItem("accessToken", JSON.stringify(res.accessToken));
+      localStorage.setItem("user", JSON.stringify(res.user));
 
       navigate("/dashboard");
 
     } catch (error) {
       toast.error("Google Login Failed")
     }
-    console.log("Google Login Success:", token);
   };
 
   const handleError = (error) => {
